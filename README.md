@@ -101,4 +101,4 @@ C:\Users\Administrator\Desktop>BrowserGhost.exe
 
 ```
 
-
+![](1.png)
