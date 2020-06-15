@@ -317,8 +317,19 @@ namespace BrowserGhost
                 DataTable resultantQuery = database.ExecuteQuery(query);
                 foreach (DataRow row in resultantQuery.Rows)
                 {
-                    string url = (string)row["url"];
-                    string title = (string)row["title"];
+                    string url;
+                    string title;
+                    try
+                    {
+                        url = (string)row["url"];
+                        title = (string)row["title"];
+                    }
+                    catch
+                    {
+                        continue;
+
+                    }
+                    
                     
                     Console.WriteLine("\t{0} \t {1}", url, title);
 
