@@ -9,44 +9,48 @@
 - 实现system抓机器上其他用户的浏览器密码(方便横向移动时快速凭据采集)
 - 用.net2 实现可兼容大部分windows，并去掉依赖(不需要System.Data.SQLite.dll这些累赘)
 - 可以解密chrome全版本密码(chrome80版本后加密方式变了)
-- 已经可以获取login data、cookie、history、book了
+- Chrome已经可以获取login data、cookie、history、book了
+- IE 支持获取书签、密码(.net2提取密码太复杂了代码参考至 https://github.com/djhohnstein/SharpWeb/raw/master/Edge/SharpEdge.cs)、history了
+
 
 ## 即将去做:
 
+- system权限下获取IE History有点问题
 - 优化输出
 - 监控实时cookie
-- 兼容主流浏览器(ie、firefox、360极速浏览器等)
+- 兼容其他主流浏览器(firefox、360极速浏览器等)
 
 ```
 C:\Users\Administrator\Desktop>BrowserGhost.exe
 [+] Current user Administrator
-[*] [1176] [explorer] [Administrator]
+[*] [4764] [explorer] [Administrator]
 [*] Impersonate user Administrator
 [*] Current user Administrator
+===============Chrome=============
 
-[*] Start Get Chrome Login Data
-	[+] Copy C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Login Data to C:\Users\Administrator\AppData\Local\Temp\tmp1B7D.tmp
-	[URL] -> https://github.com/login
+[*]Get Chrome Login Data
+	[+] Copy C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Login Data to C:\Users\Administrator\AppData\Local\Temp\tmp6B9F.tmp
+	[URL] -> https://xui.ptlogin2.qq.com/cgi-bin/xlogin
 	[USERNAME] -> n0thing@gmail.com
 	[PASSWORD] -> Iloveprettygirls
 
-	[+] Delete File C:\Users\Administrator\AppData\Local\Temp\tmp1B7D.tmp
+	[+] Delete File C:\Users\Administrator\AppData\Local\Temp\tmp6B9F.tmp
 
-[*] Start Get Chrome Bookmarks
+[*]Get Chrome Bookmarks
 {
-   "checksum": "c2ed0a404ff1dce21f0a229055b7cb36",
+   "checksum": "eee70b132cc4f9644d01f989e18fdb38",
    "roots": {
       "bookmark_bar": {
          "children": [ {
-            "date_added": "13236485210177330",
-            "guid": "4858fd46-732b-4756-b27f-7d89efaff625",
+            "date_added": "13236861887917624",
+            "guid": "c5df2041-d745-4173-af39-b5c48f8d98a2",
             "id": "5",
-            "name": "The world’s leading software development platform · GitHub",
+            "name": "GitHub",
             "type": "url",
             "url": "https://github.com/"
          } ],
-         "date_added": "13236485205390236",
-         "date_modified": "13236485210177330",
+         "date_added": "13236861618031351",
+         "date_modified": "13236861887917624",
          "guid": "00000000-0000-4000-a000-000000000002",
          "id": "1",
          "name": "书签栏",
@@ -54,7 +58,7 @@ C:\Users\Administrator\Desktop>BrowserGhost.exe
       },
       "other": {
          "children": [  ],
-         "date_added": "13236485205390251",
+         "date_added": "13236861618031378",
          "date_modified": "0",
          "guid": "00000000-0000-4000-a000-000000000003",
          "id": "2",
@@ -63,7 +67,7 @@ C:\Users\Administrator\Desktop>BrowserGhost.exe
       },
       "synced": {
          "children": [  ],
-         "date_added": "13236485205390252",
+         "date_added": "13236861618031381",
          "date_modified": "0",
          "guid": "00000000-0000-4000-a000-000000000004",
          "id": "3",
@@ -75,29 +79,46 @@ C:\Users\Administrator\Desktop>BrowserGhost.exe
 }
 
 
-[*] Start Get Chrome Cookie
-	[+] Copy C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Cookies to C:\Users\Administrator\AppData\Local\Temp\tmp1C1A.tmp
-	[.github.com] 	 _octo=GH1.1.434863639.1591963566
-	[.github.com] 	 logged_in=no
-	[github.com] 	 _device_id=4a24785d8dccc12f062fb54c881820f3
-	[.github.com] 	 _ga=GA1.2.1739362774.1591963568
-	[.google.com] 	 1P_JAR=2020-06-13-01
-	[.google.com.hk] 	 1P_JAR=2020-06-13-01
-	[.google.com] 	 NID=204=bwGOYwnjfPBO2P6zRXqDBEFehuBPeyyf0AWBA8EIK22lqIgMvVtcu86OmszFqdooyW1JwrUQ2K4zIblpfJpxOMmj6Nrq-ofA1rNfOV5Wt5EB9l-qJOTuMTW5NMaZh2ofU-trKn_zHbWlVoUgkUnEFStR1Hl8w4rAu1rSyDKBVB0
-	[.google.com.hk] 	 NID=204=K52w3WF9SZvbXw3sHwtQorzsLgyea_zafqVBrvkVatVJcKhOZbmMdUst2phNuQFu2oX4dJ3lYOcYlH7y5oo_aHDIiZu2LGOxt8scFmRrU7GrVu_0kQd6PJlErsgtPiUIIRIhQcskj09LdRYq-NJx7iM6eVsRLhS75c_aClm12eE
-	[github.com] 	 _gh_sess=%2FelMYjTKT2jbqyRmUxwWNQC1DINuIy1CGbROibLbmmb4Y089cdHVRBrFia7ANm4e4UaK43QyNqujiEnnUzqViHxUe4QQhMgkId2V9AWkuc3zkElsz%2BuwIf4wJ1OQ1oc9J29QEyiz4SCwcXGj3d2eP7dzO8lf6Sjoerxo65afoHZ1sxs4Xl6UBthqpQcw4I95e5UXM4IJOvFHZ9qZEW4SytmX6DaEMVwD%2BsUKrfWSySxPmtFw3HhfDEpug6A00jPNiqBYbaS32YYyXfWcSKrZyA%3D%3D--DiSJEFqTgEoZ8IqK--Eq99ToeLqWcNBv%2BSFi6Y2g%3D%3D
-	[.github.com] 	 tz=Asia%2FShanghai
-	[+] Delete File C:\Users\Administrator\AppData\Local\Temp\tmp1C1A.tmp
+[*]Get Chrome Cookie
+	[+] Copy C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Cookies to C:\Users\Administrator\AppData\Local\Temp\tmp6D94.tmp
+	[github.com] 	 _device_id=516175fxxxxxxxxx90133c2
+	[.github.com] 	 _octo=GH1.1.3xxxxxxxxx5173
+	[.google.com] 	 NID=204=DEIRBPT8FML_IsHGv1B2xxxxxxxxxxxxxxxxxxxSRlaNRV3-nfhFV8aHAgO6Smtf4JXQqR-W63p0KOVKgVd0VCXv4bKww97DEhc-PI1sVdbD4hGOuVwchN4Bwo-V61AtfjZM
+	[+] Delete File C:\Users\Administrator\AppData\Local\Temp\tmp6D94.tmp
 
-[*] Start Get Chrome History
-	[+] Copy C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\History to C:\Users\Administrator\AppData\Local\Temp\tmp1C3A.tmp
+[*]Get Chrome History
+	[+] Copy C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\History to C:\Users\Administrator\AppData\Local\Temp\tmp6E32.tmp
 	http://github.com/ 	 The world’s leading software development platform · GitHub
-	https://github.com/ 	 The world’s leading software development platform · GitHub
+	https://github.com/ 	 GitHub
 	https://github.com/login 	 Sign in to GitHub · GitHub
-	https://github.com/session 	 Sign in to GitHub · GitHub
-	[+] Delete File C:\Users\Administrator\AppData\Local\Temp\tmp1C3A.tmp
+
+	[+] Delete File C:\Users\Administrator\AppData\Local\Temp\tmp6E32.tmp
+===============IE=============
+
+[*]Get IE Books
+	C:\Users\Administrator\Favorites\Sign in to GitHub · GitHub.url
+		URL=https://github.com/session
+
+
+[*]Get IE Password
+	Vault Type   : Web Credentials
+	Resource     : https://github.com/
+	Identity     : n0thing@gmail.com
+	Credential   : Iloveprettygirls
+	LastModified : 2020/6/17 7:08:50
+
+
+[*]Get IE History
+	https://github.com/login
+	https://github.com/join
+	https://github.com/john
+	https://github.com/sign
+	http://github.com/
+	http://go.microsoft.com/fwlink/p/?LinkId=255141
 [*] Recvtoself
 [*] Current user Administrator
+
+
 
 ```
 
