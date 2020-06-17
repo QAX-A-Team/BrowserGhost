@@ -10,7 +10,7 @@
 - 用.net2 实现可兼容大部分windows，并去掉依赖(不需要System.Data.SQLite.dll这些累赘)
 - 可以解密chrome全版本密码(chrome80版本后加密方式变了)
 - Chrome已经可以获取login data、cookie、history、book了
-- IE 支持获取书签、密码(.net2提取密码太复杂了代码参考至 https://github.com/djhohnstein/SharpWeb/raw/master/Edge/SharpEdge.cs)、history了
+- IE 支持获取书签、密码、history了 (.net2提取密码太复杂了代码参考至`https://github.com/djhohnstein/SharpWeb/raw/master/Edge/SharpEdge.cs`)
 
 
 ## 即将去做:
